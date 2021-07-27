@@ -95,3 +95,4 @@ simpleFetch.remove(url: string, options: object)
   - headers: object
   - status: number,
   - statusText: string
+  - url: string
