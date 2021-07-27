@@ -1,0 +1,40 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+.container {
+  max-width: 760px;
+}
+
+.d-flex {
+  margin: 0.15rem 0;
+  padding: 0.15rem 0;
+  align-items: center;
+  gap: 1rem;
+}
+
+p {
+  margin: 0;
+}
+
+.form-control {
+  width: auto;
+}
+
+.list-group {
+  min-width: 280px;
+}
+
+.list-group-item {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-group-item input {
+  margin-left: 0.5rem;
+  width: 15px;
+  height: 15px;
+}
+
+.list-group-item .btn {
+  margin-right: 0.5rem;
+}

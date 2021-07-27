@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Fetch</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-4">Simple Fetch</h1>
+      <div class="d-flex">
+        <div class="buttons">
+          <div class="d-flex">
+            <button class="btn btn-primary" data-for="get_cached_todos">
+              Get
+            </button>
+            <p>todos from cache</p>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-primary" data-for="get_todos_from_server">
+              Get
+            </button>
+            <p>todos from server</p>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-primary" data-for="get_two_todos">
+              Get
+            </button>
+            <p>first two todos desc</p>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-primary" data-for="get_todo_by_id">
+              Get
+            </button>
+            <label>todo by ID</label>
+            <input type="text" class="todo_id form-control" value="1" />
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-success" data-for="add_todo">Add</button>
+            <input
+              type="text"
+              class="todo_text form-control"
+              value="New todo"
+            />
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-warning" data-for="send_long_request">
+              Send
+            </button>
+            <p>too long request</p>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-danger" data-for="get_error">Get</button>
+            <p>custom error</p>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-danger" data-for="throw_exception">
+              Throw
+            </button>
+            <p>exception</p>
+          </div>
+        </div>
+        <ul class="result list-group"></ul>
+      </div>
+    </div>
+
+    <script>
+      const container = document.querySelector('.container')
+      const buttons = container.querySelector('.buttons')
+      const result = container.querySelector('.result')
+      const idInput = container.querySelector('.todo_id')
+      const textInput = container.querySelector('.todo_text')
+    </script>
+    <script src="scripts/index.js" type="module"></script>
+  </body>
+</html>
