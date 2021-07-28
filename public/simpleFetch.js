@@ -44,6 +44,7 @@ export const simpleFetch = async (options) => {
     },
     referrerPolicy: 'no-referrer',
     customCache: options?.customCache ?? true,
+    log: options?.log || false,
     signal: controller.signal
   }
 
@@ -62,7 +63,9 @@ export const simpleFetch = async (options) => {
     }
   }
 
-  console.log(`%c Options: ${JSON.stringify(defaultOptions)}`, 'color: blue')
+  if (options?.log) {
+    console.log(`%c Options: ${JSON.stringify(defaultOptions)}`, 'color: blue')
+  }
 
   const handlers = options?.handlers
 
@@ -118,10 +121,14 @@ export const simpleFetch = async (options) => {
 
       if (defaultOptions.method === 'GET') {
         cache.set(url, result)
-        console.log(cache)
+        if (options?.log) {
+          console.log(cache)
+        }
       }
 
-      console.log(`%c Result: ${JSON.stringify(result)}`, 'color: green')
+      if (options?.log) {
+        console.log(`%c Result: ${JSON.stringify(result)}`, 'color: green')
+      }
 
       return handlers?.onSuccess ? handlers.onSuccess(result) : result
     }
@@ -132,7 +139,9 @@ export const simpleFetch = async (options) => {
       info
     }
 
-    console.log(`%c Result: ${JSON.stringify(result)}`, 'color: red')
+    if (options?.log) {
+      console.log(`%c Result: ${JSON.stringify(result)}`, 'color: red')
+    }
 
     return result
   } catch (err) {

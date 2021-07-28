@@ -4,7 +4,9 @@ import { createTodo } from './utils.js'
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'
 
 export const getCachedTodos = async () => {
-  const response = await simpleFetch()
+  const response = await simpleFetch({
+    log: true
+  })
   response.data.forEach((todo) => {
     createTodo(todo)
   })
@@ -42,7 +44,8 @@ export const getFirstTwoTodosDesc = async () => {
       _order: 'desc',
       _limit: 2
     },
-    handlers: { onSuccess }
+    handlers: { onSuccess },
+    log: true
   })
   return response
 }

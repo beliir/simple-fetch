@@ -42,10 +42,10 @@ npm run dev
 
 [Project on CodeSanbox]()
 
-## Simple example
+## You can use the module directly by importing it from GitHub Pages
 
 ```js
-import simpleFetch from './simpleFetch.js'
+import simpleFetch from 'https://harryheman.github.io/simple-fetch/public/simpleFetch.js'
 
 const getTodos = async () => {
   const todos = await simpleFetch('https://jsonplaceholder.typicode.com/todos')
@@ -90,10 +90,11 @@ simpleFetch.baseUrl = 'https://some-url.com'
 
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#parameters" target="_blank">common</a>
 - custom:
-  - customCache: boolean - if `true`, result of the GET-request will be stored in the local cache  - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>. Result of the same request will be retrieved from this cache until `customCache` is set to `false`
   - params: object - this object is converted to encoded search parameters that are appended to the URL:
     - key: string
     - value: string
+  - customCache: boolean - if `true`, result of the GET-request will be stored in the local cache  - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>. Result of the same request will be retrieved from this cache until `customCache` is set to `false`
+  - log: boolean - if `true`, options, cache and result will be output to the concole
   - handlers: object:
     - onSuccess: function
     - onError: function
