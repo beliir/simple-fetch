@@ -1,8 +1,8 @@
-const cache = new Map()
+const simpleFetchCache = new Map()
 
-let controller = new window.AbortController()
+let simpleFetchController = new window.AbortController()
 
-export const simpleFetch = async (options) => {
+const simpleFetch = async (options) => {
   let url = ''
 
   if (typeof options === 'string') {
@@ -45,7 +45,7 @@ export const simpleFetch = async (options) => {
     referrerPolicy: 'no-referrer',
     customCache: options?.customCache ?? true,
     log: options?.log || false,
-    signal: controller.signal
+    signal: simpleFetchController.signal
   }
 
   if (options?.body) {
@@ -70,14 +70,14 @@ export const simpleFetch = async (options) => {
   const handlers = options?.handlers
 
   if (handlers?.onAbort) {
-    controller.signal.addEventListener('abort', handlers.onAbort)
+    simpleFetchController.signal.addEventListener('abort', handlers.onAbort)
   }
 
-  const isCacheEnabled =
+  const issimpleFetchCacheEnabled =
     defaultOptions.method === 'GET' && defaultOptions.customCache
 
-  if (isCacheEnabled && cache.has(url)) {
-    const data = cache.get(url)
+  if (issimpleFetchCacheEnabled && simpleFetchCache.has(url)) {
+    const data = simpleFetchCache.get(url)
     return handlers?.onSuccess ? handlers.onSuccess(data) : data
   }
 
@@ -120,9 +120,9 @@ export const simpleFetch = async (options) => {
       result = { data, error: null, info }
 
       if (defaultOptions.method === 'GET') {
-        cache.set(url, result)
+        simpleFetchCache.set(url, result)
         if (options?.log) {
-          console.log(cache)
+          console.log(simpleFetchCache)
         }
       }
 
@@ -161,8 +161,8 @@ Object.defineProperty(simpleFetch, 'baseUrl', {
 })
 
 simpleFetch.cancel = () => {
-  controller.abort()
-  controller = new window.AbortController()
+  simpleFetchController.abort()
+  simpleFetchController = new window.AbortController()
 }
 
 simpleFetch.get = (url, options) =>
@@ -193,3 +193,5 @@ simpleFetch.remove = (url, options) =>
     method: 'DELETE',
     ...options
   })
+
+export default simpleFetch

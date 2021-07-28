@@ -45,7 +45,7 @@ npm run dev
 ## You can use the module directly by importing it from GitHub Pages
 
 ```js
-import simpleFetch from 'https://harryheman.github.io/simple-fetch/public/simpleFetch.js'
+import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
 
 const getTodos = async () => {
   const todos = await simpleFetch('https://jsonplaceholder.typicode.com/todos')
