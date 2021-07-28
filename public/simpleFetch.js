@@ -33,6 +33,10 @@ export const simpleFetch = async (options) => {
 
   url = window.encodeURI(url)
 
+  if (!url) {
+    return console.error('URL not provided!')
+  }
+
   let defaultOptions = {
     method: options?.method || 'GET',
     headers: options?.headers || {
@@ -74,6 +78,14 @@ export const simpleFetch = async (options) => {
     return handlers?.onSuccess ? handlers.onSuccess(data) : data
   }
 
+  const isBodyNotProvided =
+    (defaultOptions.method === 'POST' || defaultOptions.method === 'PUT') &&
+    !defaultOptions.body
+
+  if (isBodyNotProvided) {
+    console.warn('Body not provided')
+  }
+
   try {
     const response = await fetch(url, defaultOptions)
 
@@ -102,7 +114,7 @@ export const simpleFetch = async (options) => {
     let result = null
 
     if (response.ok) {
-      result = { data, error: null, ...info }
+      result = { data, error: null, info }
 
       if (defaultOptions.method === 'GET') {
         cache.set(url, result)
@@ -117,7 +129,7 @@ export const simpleFetch = async (options) => {
     result = {
       data: null,
       error: data,
-      ...info
+      info
     }
 
     console.log(`%c Result: ${JSON.stringify(result)}`, 'color: red')

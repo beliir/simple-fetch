@@ -42,7 +42,7 @@ npm run dev
 
 [Project on CodeSanbox]()
 
-## Usage
+## Simple example
 
 ```js
 import simpleFetch from './simpleFetch.js'
@@ -72,6 +72,18 @@ simpleFetch.post(url: string, body: any, options: object)
 simpleFetch.update(url: string, body: any, options: object)
 // DELETE
 simpleFetch.remove(url: string, options: object)
+```
+
+## Cancellation of the request
+
+```js
+simpleFetch.cancel()
+```
+
+## Setting base URL
+
+```js
+simpleFetch.baseUrl = 'https://some-url.com'
 ```
 
 ## Options
