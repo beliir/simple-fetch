@@ -40,18 +40,32 @@ yarn dev
 npm run dev
 ```
 
-[Project on CodeSanbox]()
+[Project on CodeSanbox](https://codesandbox.io/s/simple-fetch-1o2kj)
 
-## You can use the module directly by importing it from GitHub Pages
+## Installation
+
+```bash
+yarn add very-simple-fetch
+# or
+npm i very-simple-fetch
+```
+
+## Usage
 
 ```js
-import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
+import simpleFetch from 'very-simple-fetch'
 
 const getTodos = async () => {
   const todos = await simpleFetch('https://jsonplaceholder.typicode.com/todos')
   console.table(todos)
 }
 getTodos()
+```
+
+## You can import module directly from GitHub Pages
+
+```js
+import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
 ```
 
 ## Signature of the main function

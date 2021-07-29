@@ -14,7 +14,7 @@ container.addEventListener('click', async ({ target }) => {
       return A.getTodosFromServer()
     case 'get_todo_by_id':
       return A.getTodoById(idInput.value)
-    case 'get_two_todos':
+    case 'get_first_two_todos':
       return A.getFirstTwoTodosDesc()
     case 'add_todo':
       await A.addTodo(textInput.value)
@@ -32,9 +32,9 @@ container.addEventListener('click', async ({ target }) => {
       break
     }
     case 'send_long_request':
-      await A.sendTooLongRequest()
+      A.sendTooLongRequest()
       break
-    case 'get_error':
+    case 'get_custom_error':
       A.getCustomError()
       break
     case 'throw_exception':

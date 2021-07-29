@@ -1,4 +1,4 @@
-import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
+import simpleFetch from '../../simpleFetch.js'
 import { createTodo } from './utils.js'
 
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'
@@ -7,6 +7,7 @@ export const getCachedTodos = async () => {
   const response = await simpleFetch({
     log: true
   })
+
   response.data.forEach((todo) => {
     createTodo(todo)
   })
@@ -18,6 +19,7 @@ export const getTodosFromServer = async () => {
       createTodo(todo)
     })
   }
+
   await simpleFetch({
     customCache: false,
     handlers: { onSuccess }
@@ -27,7 +29,7 @@ export const getTodosFromServer = async () => {
 export const getTodoById = async (todoId, render = true) => {
   const { data } = await simpleFetch.get(todoId)
   if (render) {
-    createTodo(data)
+    return createTodo(data)
   }
   return data
 }
@@ -38,6 +40,7 @@ export const getFirstTwoTodosDesc = async () => {
       createTodo(todo)
     })
   }
+
   const response = await simpleFetch({
     params: {
       _sort: 'id',

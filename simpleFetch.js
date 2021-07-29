@@ -70,13 +70,15 @@ const simpleFetch = async (options) => {
   const handlers = options?.handlers
 
   if (handlers?.onAbort) {
-    simpleFetchController.signal.addEventListener('abort', handlers.onAbort)
+    simpleFetchController.signal.addEventListener('abort', handlers.onAbort, {
+      once: true
+    })
   }
 
-  const issimpleFetchCacheEnabled =
+  const isCacheEnabled =
     defaultOptions.method === 'GET' && defaultOptions.customCache
 
-  if (issimpleFetchCacheEnabled && simpleFetchCache.has(url)) {
+  if (isCacheEnabled && simpleFetchCache.has(url)) {
     const data = simpleFetchCache.get(url)
     return handlers?.onSuccess ? handlers.onSuccess(data) : data
   }
