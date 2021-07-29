@@ -63,7 +63,7 @@ const simpleFetch = async (options) => {
     }
   }
 
-  if (options?.log) {
+  if (defaultOptions.log) {
     console.log(`%c Options: ${JSON.stringify(defaultOptions)}`, 'color: blue')
   }
 
@@ -123,12 +123,12 @@ const simpleFetch = async (options) => {
 
       if (defaultOptions.method === 'GET') {
         simpleFetchCache.set(url, result)
-        if (options?.log) {
+        if (defaultOptions.log) {
           console.log(simpleFetchCache)
         }
       }
 
-      if (options?.log) {
+      if (defaultOptions.log) {
         console.log(`%c Result: ${JSON.stringify(result)}`, 'color: green')
       }
 
@@ -141,7 +141,7 @@ const simpleFetch = async (options) => {
       info
     }
 
-    if (options?.log) {
+    if (defaultOptions.log) {
       console.log(`%c Result: ${JSON.stringify(result)}`, 'color: red')
     }
 
