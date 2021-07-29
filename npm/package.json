@@ -1,6 +1,6 @@
 {
   "name": "very-simple-fetch",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Utility for easy use of the Fetch API",
   "keywords": [
     "fetch",
@@ -25,18 +25,5 @@
     "url": "https://github.com/harryheman/simple-fetch"
   },
   "main": "server.js",
-  "license": "MIT",
-  "dependencies": {
-    "concurrently": "^6.2.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "json-server": "^0.16.3",
-    "nodemon": "^2.0.12",
-    "open-cli": "^7.0.0"
-  },
-  "scripts": {
-    "db": "json-server -w todos.json -p 5000 -m middleware.js",
-    "server": "open-cli http://localhost:3000 && nodemon server.js",
-    "dev": "concurrently \"yarn db\" \"yarn server\""
-  }
+  "license": "MIT"
 }
