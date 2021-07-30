@@ -34,6 +34,8 @@ getTodos()
 import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
 ```
 
+Note: this module contains optional chaining and nullish coalescing operators, so be sure that your environment supports this features.
+
 ## Signature of the main function
 
 ```js
@@ -89,3 +91,5 @@ simpleFetch.baseUrl = 'https://some-url.com'
   - status: number,
   - statusText: string
   - url: string
+
+Utility returns something even if an exception was thrown.
