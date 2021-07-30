@@ -4,7 +4,7 @@ import { createTodo } from './utils.js'
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'
 
 export const getCachedTodos = async () => {
-  const response = await simpleFetch({
+  const response = await simpleFetch.get({
     log: true
   })
 

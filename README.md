@@ -84,16 +84,23 @@ simpleFetch(options: string | object)
 ```js
 // GET
 simpleFetch.get(url: string, options: object)
+// or if you set base URL
+simpleFetch.get(options: object)
+
 // POST
 simpleFetch.post(url: string, body: any, options: object)
-// or if you set base URL
+// with baseUrl
 simpleFetch.post(body: any, options: object)
+
 // PUT
 simpleFetch.update(url: string, body: any, options: object)
-// or if you set base URL
+// with baseUrl
 simpleFetch.update(body: any, options: object)
+
 // DELETE
 simpleFetch.remove(url: string, options: object)
+// with baseUrl
+simpleFetch.remove(options: object)
 ```
 
 ## Cancellation of the request

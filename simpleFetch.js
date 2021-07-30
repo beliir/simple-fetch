@@ -167,11 +167,17 @@ simpleFetch.cancel = () => {
   simpleFetchController = new window.AbortController()
 }
 
-simpleFetch.get = (url, options) =>
-  simpleFetch({
-    url,
-    ...options
+simpleFetch.get = (url, options) => {
+  if (typeof url === 'string') {
+    return simpleFetch({
+      url,
+      ...options
+    })
+  }
+  return simpleFetch({
+    ...url
   })
+}
 
 simpleFetch.post = (url, body, options) => {
   if (typeof url === 'string') {
@@ -205,11 +211,17 @@ simpleFetch.update = (url, body, options) => {
   })
 }
 
-simpleFetch.remove = (url, options) =>
-  simpleFetch({
-    url,
-    method: 'DELETE',
-    ...options
+simpleFetch.remove = (url, options) => {
+  if (typeof url === 'string') {
+    return simpleFetch({
+      url,
+      method: 'DELETE',
+      ...options
+    })
+  }
+  return simpleFetch({
+    ...url
   })
+}
 
 export default simpleFetch
