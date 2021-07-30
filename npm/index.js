@@ -144,7 +144,9 @@ const simpleFetch = async (options) => {
         console.log(`%c Result: ${JSON.stringify(result)}`, 'color: green')
       }
 
-      return handlers?.onSuccess ? handlers.onSuccess(result) : result
+      return handlers && handlers.onSuccess
+        ? handlers.onSuccess(result)
+        : result
     }
 
     result = {
@@ -159,7 +161,7 @@ const simpleFetch = async (options) => {
 
     return result
   } catch (err) {
-    if (handlers?.onError) {
+    if (handlers && handlers.onError) {
       return handlers.onError(err)
     }
     console.error(err)
