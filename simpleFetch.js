@@ -173,21 +173,37 @@ simpleFetch.get = (url, options) =>
     ...options
   })
 
-simpleFetch.post = (url, body, options) =>
-  simpleFetch({
-    url,
+simpleFetch.post = (url, body, options) => {
+  if (typeof url === 'string') {
+    return simpleFetch({
+      url,
+      method: 'POST',
+      body,
+      ...options
+    })
+  }
+  return simpleFetch({
     method: 'POST',
-    body,
-    ...options
+    body: url,
+    ...body
   })
+}
 
-simpleFetch.update = (url, body, options) =>
-  simpleFetch({
-    url,
+simpleFetch.update = (url, body, options) => {
+  if (typeof url === 'string') {
+    return simpleFetch({
+      url,
+      method: 'PUT',
+      body,
+      ...options
+    })
+  }
+  return simpleFetch({
     method: 'PUT',
-    body,
-    ...options
+    body: url,
+    ...body
   })
+}
 
 simpleFetch.remove = (url, options) =>
   simpleFetch({

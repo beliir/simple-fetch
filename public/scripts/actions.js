@@ -1,4 +1,4 @@
-import simpleFetch from '../../npm/index.js'
+import simpleFetch from '../../simpleFetch.js'
 import { createTodo } from './utils.js'
 
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'
@@ -60,7 +60,7 @@ export const addTodo = async (text) => {
     text,
     done: false
   }
-  await simpleFetch.post('', todo)
+  await simpleFetch.post(todo)
 }
 
 export const updateTodo = async (todoId, newTodo) => {

@@ -28,7 +28,7 @@ getTodos()
 
 [More examples on CodeSanbox](https://codesandbox.io/s/simple-fetch-1o2k)
 
-## You can import module directly from GitHub Pages
+## You can also import module directly from GitHub Pages
 
 ```js
 import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
@@ -50,8 +50,12 @@ simpleFetch(options: string | object)
 simpleFetch.get(url: string, options: object)
 // POST
 simpleFetch.post(url: string, body: any, options: object)
+// or if you set base URL
+simpleFetch.post(body: any, options: object)
 // PUT
 simpleFetch.update(url: string, body: any, options: object)
+// or if you set base URL
+simpleFetch.update(body: any, options: object)
 // DELETE
 simpleFetch.remove(url: string, options: object)
 ```
@@ -81,6 +85,21 @@ simpleFetch.baseUrl = 'https://some-url.com'
     - onSuccess: function
     - onError: function
     - onAbort: function
+
+## Default options
+
+```js
+{
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  referrerPolicy: 'no-referrer',
+  customCache: true,
+  log: false,
+  signal: new window.AbortController().signal
+}
+```
 
 ## Response
 
