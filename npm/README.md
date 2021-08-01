@@ -3,6 +3,8 @@
 ### Utility for easy use of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API</a>
 
 - Returns final (parsed to JSON, text or raw) result, including custom errors
+- Uses local cache to store and retrieve results of GET-requests
+- Accepts `options.params` object which converted to encoded search parameters
 - Can be cancelled (for example, if the request takes too long)
 - Contains `baseUrl` and `authToken` setters
 
@@ -89,12 +91,12 @@ simpleFetch.cancel()
 
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#parameters" target="_blank">common</a>
 - custom:
-  - params: object - this object is converted to encoded search parameters that are appended to the URL:
+  - customCache: boolean - if `true`, result of the GET-request will be stored in the local cache  - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>. Result of the same request will be retrieved from this cache until `customCache` is set to `false`. Default value is `true`
+  - log: boolean - if `true`, options, cache and result will be output to the concole. Default value is `false`
+  - params?: object - this object is converted to encoded search parameters that are appended to the URL:
     - key: string
     - value: string
-  - customCache: boolean - if `true`, result of the GET-request will be stored in the local cache  - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>. Result of the same request will be retrieved from this cache until `customCache` is set to `false`
-  - log: boolean - if `true`, options, cache and result will be output to the concole
-  - handlers: object:
+  - handlers?: object:
     - onSuccess: function
     - onError: function
     - onAbort: function
@@ -116,7 +118,7 @@ simpleFetch.cancel()
 
 ## Response
 
-- data: any | null - result of the response or `null` if there war an error
+- data: any | null - result of the request or `null` if there war an error
 - error: null | any - `null` or custom error
 - info: object:
   - headers: object
@@ -124,4 +126,4 @@ simpleFetch.cancel()
   - statusText: string
   - url: string
 
-Utility returns something even if an exception was thrown.
+Utility trying to send request with any arguments and return something even if an exception was thrown.

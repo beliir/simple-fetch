@@ -77,6 +77,7 @@ export const setAuthToken = () => {
 
 export const sendPrivateRequest = async () => {
   const { data, error } = await simpleFetch.get('/private-request', {
+    customCache: false,
     log: true
   })
   if (error) {

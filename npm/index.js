@@ -16,7 +16,7 @@ const simpleFetch = async (options) => {
       url = simpleFetch.baseUrl
     } else {
       url =
-        url.indexOf('/') === 0
+        url.startsWith('/') || url.startsWith('?')
           ? `${simpleFetch.baseUrl}${url}`
           : `${simpleFetch.baseUrl}/${url}`
     }
@@ -24,10 +24,7 @@ const simpleFetch = async (options) => {
 
   if (options && options.params) {
     url = Object.entries(options.params)
-      .reduce((a, [k, v]) => {
-        a += `&${k}=${v}`
-        return a
-      }, url)
+      .reduce((a, [k, v]) => (a += `&${k}=${v}`), url)
       .replace('&', '?')
   }
 
@@ -42,7 +39,7 @@ const simpleFetch = async (options) => {
     headers: (options && options.headers) || {
       'Content-Type': 'application/json'
     },
-    referrerPolicy: 'no-referrer',
+    referrerPolicy: options?.referrerPolicy || 'no-referrer',
     customCache: true,
     log: (options && options.log) || false,
     signal: simpleFetchController.signal
@@ -75,6 +72,14 @@ const simpleFetch = async (options) => {
     console.log(`%c Options: ${JSON.stringify(defaultOptions)}`, 'color: blue')
   }
 
+  const isBodyNotProvided =
+    (defaultOptions.method === 'POST' || defaultOptions.method === 'PUT') &&
+    !defaultOptions.body
+
+  if (isBodyNotProvided) {
+    console.warn('Body not provided')
+  }
+
   const handlers = options && options.handlers
 
   if (handlers && handlers.onAbort) {
@@ -91,24 +96,16 @@ const simpleFetch = async (options) => {
     return handlers && handlers.onSuccess ? handlers.onSuccess(data) : data
   }
 
-  const isBodyNotProvided =
-    (defaultOptions.method === 'POST' || defaultOptions.method === 'PUT') &&
-    !defaultOptions.body
-
-  if (isBodyNotProvided) {
-    console.warn('Body not provided')
-  }
-
   try {
     const response = await fetch(url, defaultOptions)
 
     const { status, statusText } = response
 
     const info = {
-      headers: [...response.headers.entries()].reduce((a, [k, v]) => {
-        a[k] = v
-        return a
-      }, {}),
+      headers: [...response.headers.entries()].reduce(
+        (a, [k, v]) => (a[k] = v),
+        {}
+      ),
       status,
       statusText,
       url: response.url
@@ -164,25 +161,25 @@ const simpleFetch = async (options) => {
     return handlers && handlers.onError ? handlers.onError(result) : result
   } catch (err) {
     if (handlers && handlers.onError) {
-      return handlers.onError(err)
+      handlers.onError(err)
     }
     console.error(err)
   }
 }
 
-let baseUrl = ''
+let simpleFetchBaseUrl = ''
 Object.defineProperty(simpleFetch, 'baseUrl', {
-  get: () => baseUrl,
-  set: (url) => {
-    baseUrl = url
+  get: () => simpleFetchBaseUrl,
+  set(url) {
+    simpleFetchBaseUrl = url
   }
 })
 
-let authToken = ''
+let simpleFetchAuthToken = ''
 Object.defineProperty(simpleFetch, 'authToken', {
-  get: () => authToken,
-  set: (token) => {
-    authToken = token
+  get: () => simpleFetchAuthToken,
+  set(token) {
+    simpleFetchAuthToken = token
   }
 })
 

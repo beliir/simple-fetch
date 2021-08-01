@@ -17,36 +17,29 @@ container.addEventListener('click', async ({ target }) => {
     case 'get_first_two_todos':
       return A.getFirstTwoTodosDesc()
     case 'add_todo':
-      await A.addTodo(textInput.value)
-      break
+      return await A.addTodo(textInput.value)
     case 'update_todo': {
       const { id } = target.closest('.todo_item').dataset
       const existingTodo = await A.getTodoById(id, false)
       const newTodo = { ...existingTodo, done: target.checked }
-      await A.updateTodo(id, newTodo)
-      break
+      return await A.updateTodo(id, newTodo)
     }
     case 'remove_todo': {
       const { id } = target.closest('.todo_item').dataset
-      await A.removeTodo(id)
-      break
+      return await A.removeTodo(id)
     }
     case 'set_auth_token':
-      A.setAuthToken()
-      break
+      return A.setAuthToken()
     case 'send_private_request':
-      A.sendPrivateRequest()
-      break
+      return A.sendPrivateRequest()
     case 'send_long_request':
-      A.sendTooLongRequest()
-      break
+      return A.sendTooLongRequest()
     case 'get_custom_error':
-      A.getCustomError()
-      break
+      return A.getCustomError()
     case 'throw_exception':
-      A.throwException()
-      break
+      return A.throwException()
   }
+
   if (cacheRefresh.includes(target.dataset.for)) {
     A.getTodosFromServer()
   }
