@@ -71,6 +71,21 @@ export const removeTodo = async (todoId) => {
   await simpleFetch.remove(todoId)
 }
 
+export const setAuthToken = () => {
+  simpleFetch.authToken = 'token'
+}
+
+export const sendPrivateRequest = async () => {
+  const { data, error } = await simpleFetch.get('/private-request', {
+    log: true
+  })
+  if (error) {
+    console.error(error)
+  } else {
+    console.log(data)
+  }
+}
+
 export const sendTooLongRequest = async () => {
   const onAbort = () => {
     console.log('Request aborted!')

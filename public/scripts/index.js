@@ -31,6 +31,12 @@ container.addEventListener('click', async ({ target }) => {
       await A.removeTodo(id)
       break
     }
+    case 'set_auth_token':
+      A.setAuthToken()
+      break
+    case 'send_private_request':
+      A.sendPrivateRequest()
+      break
     case 'send_long_request':
       A.sendTooLongRequest()
       break

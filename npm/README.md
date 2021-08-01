@@ -4,7 +4,7 @@
 
 - Returns final (parsed to JSON, text or raw) result, including custom errors
 - Can be cancelled (for example, if the request takes too long)
-- Contains `baseUrl` setter
+- Contains `baseUrl` and `authToken` setters
 
 ## Installation
 
@@ -67,16 +67,22 @@ simpleFetch.remove(url: string, options: object)
 simpleFetch.remove(options: object)
 ```
 
+## Setting base URL
+
+```js
+simpleFetch.baseUrl = 'https://example.com'
+```
+
+## Setting auth token
+
+```js
+simpleFetch.authToken = token
+```
+
 ## Cancellation of the request
 
 ```js
 simpleFetch.cancel()
-```
-
-## Setting base URL
-
-```js
-simpleFetch.baseUrl = 'https://some-url.com'
 ```
 
 ## Options

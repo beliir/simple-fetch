@@ -48,6 +48,10 @@ const simpleFetch = async (options) => {
     signal: simpleFetchController.signal
   }
 
+  if (simpleFetch.authToken) {
+    defaultOptions.headers['Authorization'] = `Bearer ${simpleFetch.authToken}`
+  }
+
   if (options?.body) {
     if (defaultOptions.headers['Content-Type'] === 'application/json') {
       defaultOptions.body = JSON.stringify(options.body)
@@ -159,6 +163,14 @@ Object.defineProperty(simpleFetch, 'baseUrl', {
   get: () => baseUrl,
   set: (url) => {
     baseUrl = url
+  }
+})
+
+let authToken = ''
+Object.defineProperty(simpleFetch, 'authToken', {
+  get: () => authToken,
+  set: (token) => {
+    authToken = token
   }
 })
 
