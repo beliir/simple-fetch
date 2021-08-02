@@ -17,16 +17,17 @@ container.addEventListener('click', async ({ target }) => {
     case 'get_first_two_todos':
       return A.getFirstTwoTodosDesc()
     case 'add_todo':
-      return await A.addTodo(textInput.value)
+      await A.addTodo(textInput.value)
+      break
     case 'update_todo': {
       const { id } = target.closest('.todo_item').dataset
-      const existingTodo = await A.getTodoById(id, false)
-      const newTodo = { ...existingTodo, done: target.checked }
-      return await A.updateTodo(id, newTodo)
+      await A.updateTodo(id)
+      break
     }
     case 'remove_todo': {
       const { id } = target.closest('.todo_item').dataset
-      return await A.removeTodo(id)
+      await A.removeTodo(id)
+      break
     }
     case 'set_auth_token':
       return A.setAuthToken()

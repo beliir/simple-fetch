@@ -26,12 +26,9 @@ export const getTodosFromServer = async () => {
   })
 }
 
-export const getTodoById = async (todoId, render = true) => {
+export const getTodoById = async (todoId) => {
   const { data } = await simpleFetch.get(todoId)
-  if (render) {
-    return createTodo(data)
-  }
-  return data
+  createTodo(data)
 }
 
 export const getFirstTwoTodosDesc = async () => {
@@ -63,7 +60,11 @@ export const addTodo = async (text) => {
   await simpleFetch.post(todo)
 }
 
-export const updateTodo = async (todoId, newTodo) => {
+export const updateTodo = async (todoId) => {
+  const { data: existingTodo } = await simpleFetch.get(todoId, {
+    customCache: false
+  })
+  const newTodo = { ...existingTodo, done: !existingTodo.done }
   await simpleFetch.update(todoId, newTodo)
 }
 

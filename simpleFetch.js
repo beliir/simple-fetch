@@ -24,7 +24,10 @@ const simpleFetch = async (options) => {
 
   if (options?.params) {
     url = Object.entries(options.params)
-      .reduce((a, [k, v]) => (a += `&${k}=${v}`), url)
+      .reduce((a, [k, v]) => {
+        a += `&${k}=${v}`
+        return a
+      }, url)
       .replace('&', '?')
   }
 
@@ -98,10 +101,10 @@ const simpleFetch = async (options) => {
     const { status, statusText } = response
 
     const info = {
-      headers: [...response.headers.entries()].reduce(
-        (a, [k, v]) => (a[k] = v),
-        {}
-      ),
+      headers: [...response.headers.entries()].reduce((a, [k, v]) => {
+        a[k] = v
+        return a
+      }, {}),
       status,
       statusText,
       url: response.url
