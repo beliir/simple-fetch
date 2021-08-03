@@ -1,6 +1,6 @@
 {
   "name": "very-simple-fetch",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Utility for easy use of the Fetch API",
   "keywords": [
     "fetch",

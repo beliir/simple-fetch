@@ -115,5 +115,5 @@ export const getCustomError = async () => {
 
 export const throwException = async () => {
   const { error } = await simpleFetch('throw-exception')
-  document.body.innerHTML += error
+  console.log(error)
 }

@@ -8,7 +8,9 @@ const simpleFetch = async (options) => {
   if (typeof options === 'string') {
     url = options
   } else {
-    url = options && options.url
+    if (options && options.url) {
+      url = options.url
+    }
   }
 
   if (simpleFetch.baseUrl) {
@@ -42,7 +44,7 @@ const simpleFetch = async (options) => {
     headers: (options && options.headers) || {
       'Content-Type': 'application/json'
     },
-    referrerPolicy: options?.referrerPolicy || 'no-referrer',
+    referrerPolicy: (options && options.referrerPolicy) || 'no-referrer',
     customCache: true,
     log: (options && options.log) || false,
     signal: simpleFetchController.signal
@@ -116,16 +118,26 @@ const simpleFetch = async (options) => {
 
     let data = null
 
-    if (
-      response.headers.get('Content-Type') &&
-      response.headers.get('Content-Type').includes('json')
-    ) {
-      data = await response.json()
-    } else if (
-      response.headers.get('Content-Type') &&
-      response.headers.get('Content-Type').includes('text')
-    ) {
-      data = await response.text()
+    const contentTypeHeader = response.headers.get('Content-Type')
+
+    if (contentTypeHeader) {
+      if (contentTypeHeader.includes('json')) {
+        data = await response.json()
+      } else if (contentTypeHeader.includes('form-data')) {
+        data = await response.formData()
+      } else if (contentTypeHeader.includes('text')) {
+        data = await response.text()
+
+        if (data.toLowerCase().includes('error')) {
+          const errorMessage = data.match(/(?<=Error:).[^<]+/)[0].trim()
+
+          if (errorMessage) {
+            data = errorMessage
+          }
+        }
+      } else {
+        data = response
+      }
     } else {
       data = response
     }
