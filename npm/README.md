@@ -7,6 +7,8 @@
 - Accepts `options.params` object which converted to encoded search parameters
 - Can be cancelled (for example, if the request takes too long)
 - Contains `baseUrl` and `authToken` setters
+- Tested in Chrome, Firefox & Safari
+- Tested with React & Vue
 
 ## Installation
 

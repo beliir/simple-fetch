@@ -38,7 +38,7 @@ export const getFirstTwoTodosDesc = async () => {
     })
   }
 
-  const response = await simpleFetch({
+  await simpleFetch({
     params: {
       _sort: 'id',
       _order: 'desc',
@@ -47,7 +47,6 @@ export const getFirstTwoTodosDesc = async () => {
     handlers: { onSuccess },
     log: true
   })
-  return response
 }
 
 export const addTodo = async (text) => {

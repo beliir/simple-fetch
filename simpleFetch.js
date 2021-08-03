@@ -119,13 +119,14 @@ const simpleFetch = async (options) => {
     if (contentTypeHeader) {
       if (contentTypeHeader.includes('json')) {
         data = await response.json()
-      } else if (contentTypeHeader.includes('form-data')) {
-        data = await response.formData()
       } else if (contentTypeHeader.includes('text')) {
         data = await response.text()
 
-        if (data.toLowerCase().includes('error')) {
-          const errorMessage = data.match(/(?<=Error:).[^<]+/)[0].trim()
+        if (data.includes('Error:')) {
+          const errorMessage = data
+            .match(/Error:.[^<]+/)[0]
+            .replace('Error:', '')
+            .trim()
 
           if (errorMessage) {
             data = errorMessage
