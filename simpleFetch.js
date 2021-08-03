@@ -70,7 +70,10 @@ const simpleFetch = async (options) => {
   }
 
   if (defaultOptions.log) {
-    console.log(`%c Options: ${JSON.stringify(defaultOptions)}`, 'color: blue')
+    console.log(
+      `%c Options: ${JSON.stringify(defaultOptions, null, 2)}`,
+      'color: blue'
+    )
   }
 
   const isBodyNotProvided =
@@ -153,7 +156,10 @@ const simpleFetch = async (options) => {
       }
 
       if (defaultOptions.log) {
-        console.log(`%c Result: ${JSON.stringify(result)}`, 'color: green')
+        console.log(
+          `%c Result: ${JSON.stringify(result, null, 2)}`,
+          'color: green'
+        )
       }
 
       return handlers?.onSuccess ? handlers.onSuccess(result) : result
@@ -166,7 +172,7 @@ const simpleFetch = async (options) => {
     }
 
     if (defaultOptions.log) {
-      console.log(`%c Result: ${JSON.stringify(result)}`, 'color: red')
+      console.log(`%c Result: ${JSON.stringify(result, null, 2)}`, 'color: red')
     }
 
     return handlers?.onError ? handlers.onError(result) : result

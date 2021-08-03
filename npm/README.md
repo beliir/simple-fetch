@@ -24,8 +24,19 @@ npm i very-simple-fetch
 import simpleFetch from 'very-simple-fetch'
 
 const getTodos = async () => {
-  const todos = await simpleFetch('https://jsonplaceholder.typicode.com/todos')
+  const { data: todos, info } = await simpleFetch.get(
+    'https://jsonplaceholder.typicode.com/todos',
+    {
+      params: {
+        _limit: 10
+      }
+    }
+  )
   console.table(todos)
+  console.log(JSON.stringify(info, null, 2))
+
+  const { error } = await simpleFetch('https://wrong.com')
+  console.error(error)
 }
 getTodos()
 ```
