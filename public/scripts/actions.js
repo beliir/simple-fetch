@@ -1,4 +1,3 @@
-import simpleFetch from '../../simpleFetch.js'
 import { createTodo } from './utils.js'
 
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'

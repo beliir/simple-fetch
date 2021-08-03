@@ -255,5 +255,3 @@ simpleFetch.remove = (url, options) => {
     ...url
   })
 }
-
-export default simpleFetch
