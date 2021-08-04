@@ -39,49 +39,47 @@ const simpleFetch = async (options) => {
     return console.error('URL not provided!')
   }
 
-  let defaultOptions = {
-    method: options?.method || 'GET',
-    headers: options?.headers || {
+  let _options = {
+    method: 'GET',
+    headers: {
       'Content-Type': 'application/json'
     },
-    referrerPolicy: options?.referrerPolicy || 'no-referrer',
-    customCache: options?.customCache ?? true,
-    log: options?.log || false,
+    referrerPolicy: 'no-referrer',
+    customCache: true,
+    log: false,
     signal: simpleFetchController.signal
   }
 
-  if (simpleFetch.authToken) {
-    defaultOptions.headers['Authorization'] = `Bearer ${simpleFetch.authToken}`
-  }
-
-  if (options?.body) {
-    if (defaultOptions.headers['Content-Type'] === 'application/json') {
-      defaultOptions.body = JSON.stringify(options.body)
-    } else {
-      defaultOptions.body = options.body
-    }
-  }
-
   if (typeof options === 'object') {
-    defaultOptions = {
-      ...options,
-      ...defaultOptions
+    _options = {
+      ..._options,
+      ...options
     }
   }
 
-  if (defaultOptions.log) {
+  if (
+    _options?.body &&
+    _options.headers['Content-Type'] === 'application/json'
+  ) {
+    _options.body = JSON.stringify(_options.body)
+  }
+
+  if (simpleFetch.authToken) {
+    _options.headers['Authorization'] = `Bearer ${simpleFetch.authToken}`
+  }
+
+  if (_options.log) {
     console.log(
-      `%c Options: ${JSON.stringify(defaultOptions, null, 2)}`,
+      `%c Options: ${JSON.stringify(_options, null, 2)}`,
       'color: blue'
     )
   }
 
-  const isBodyNotProvided =
-    (defaultOptions.method === 'POST' || defaultOptions.method === 'PUT') &&
-    !defaultOptions.body
-
-  if (isBodyNotProvided) {
-    console.warn('Body not provided')
+  if (
+    (_options.method === 'POST' || _options.method === 'PUT') &&
+    !_options.body
+  ) {
+    console.warn('Body not provided!')
   }
 
   const handlers = options?.handlers
@@ -92,16 +90,17 @@ const simpleFetch = async (options) => {
     })
   }
 
-  const isCacheEnabled =
-    defaultOptions.method === 'GET' && defaultOptions.customCache
-
-  if (isCacheEnabled && simpleFetchCache.has(url)) {
-    const data = simpleFetchCache.get(url)
-    return handlers?.onSuccess ? handlers.onSuccess(data) : data
+  if (
+    _options.method === 'GET' &&
+    _options.customCache &&
+    simpleFetchCache.has(url)
+  ) {
+    const cachedData = simpleFetchCache.get(url)
+    return handlers?.onSuccess ? handlers.onSuccess(cachedData) : cachedData
   }
 
   try {
-    const response = await fetch(url, defaultOptions)
+    const response = await fetch(url, _options)
 
     const { status, statusText } = response
 
@@ -147,15 +146,15 @@ const simpleFetch = async (options) => {
     if (response.ok) {
       result = { data, error: null, info }
 
-      if (defaultOptions.method === 'GET') {
+      if (_options.method === 'GET') {
         simpleFetchCache.set(url, result)
 
-        if (defaultOptions.log) {
+        if (_options.log) {
           console.log(simpleFetchCache)
         }
       }
 
-      if (defaultOptions.log) {
+      if (_options.log) {
         console.log(
           `%c Result: ${JSON.stringify(result, null, 2)}`,
           'color: green'
@@ -171,7 +170,7 @@ const simpleFetch = async (options) => {
       info
     }
 
-    if (defaultOptions.log) {
+    if (_options.log) {
       console.log(`%c Result: ${JSON.stringify(result, null, 2)}`, 'color: red')
     }
 
@@ -184,19 +183,16 @@ const simpleFetch = async (options) => {
   }
 }
 
-let simpleFetchBaseUrl = ''
-Object.defineProperty(simpleFetch, 'baseUrl', {
-  get: () => simpleFetchBaseUrl,
-  set(url) {
-    simpleFetchBaseUrl = url
-  }
-})
-
-let simpleFetchAuthToken = ''
-Object.defineProperty(simpleFetch, 'authToken', {
-  get: () => simpleFetchAuthToken,
-  set(token) {
-    simpleFetchAuthToken = token
+Object.defineProperties(simpleFetch, {
+  baseUrl: {
+    value: '',
+    writable: true,
+    enumerable: true
+  },
+  authToken: {
+    value: '',
+    writable: true,
+    enumerable: true
   }
 })
 

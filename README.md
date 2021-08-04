@@ -40,7 +40,7 @@ yarn
 # or
 npm i
 
-# run json-server and express-server
+# run json and express servers
 yarn dev
 # or
 npm run dev
@@ -85,8 +85,6 @@ getTodos()
 import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
 ```
 
-Note: this module contains optional chaining and nullish coalescing operators, so be sure that your environment supports this features.
-
 ## Signature of the main function
 
 ```js
@@ -128,6 +126,12 @@ simpleFetch.baseUrl = 'https://example.com'
 
 ```js
 simpleFetch.authToken = token
+/*
+simpleFetch.headers = {
+  // ...
+  Authorization: 'Bearer [token]'
+}
+*/
 ```
 
 ## Cancellation of the request
@@ -141,7 +145,7 @@ simpleFetch.cancel()
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#parameters" target="_blank">common</a>
 - custom:
   - customCache: boolean - if `true`, result of the GET-request will be stored in the local cache  - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>. Result of the same request will be retrieved from this cache until `customCache` is set to `false`. Default value is `true`
-  - log: boolean - if `true`, options, cache and result will be output to the concole. Default value is `false`
+  - log: boolean - if `true`, options, cache and result will be output to DevTools concole. Default value is `false`
   - params?: object - this object is converted to encoded search parameters that are appended to the URL:
     - key: string
     - value: string
