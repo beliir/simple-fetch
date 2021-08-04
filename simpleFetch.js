@@ -1,8 +1,6 @@
 const simpleFetchCache = new Map()
 
-let simpleFetchController = new window.AbortController()
-
-const simpleFetch = async (options) => {
+const simpleFetch = (options) => {
   let url = ''
 
   if (typeof options === 'string') {
@@ -25,12 +23,7 @@ const simpleFetch = async (options) => {
   }
 
   if (options?.params) {
-    url = Object.entries(options.params)
-      .reduce((a, [k, v]) => {
-        a += `&${k}=${v}`
-        return a
-      }, url)
-      .replace('&', '?')
+    url = `${url}?${new URLSearchParams(options.params)}`
   }
 
   url = window.encodeURI(url)
@@ -47,7 +40,7 @@ const simpleFetch = async (options) => {
     referrerPolicy: 'no-referrer',
     customCache: true,
     log: false,
-    signal: simpleFetchController.signal
+    signal: simpleFetch.controller.signal
   }
 
   if (typeof options === 'object') {
@@ -85,7 +78,7 @@ const simpleFetch = async (options) => {
   const handlers = options?.handlers
 
   if (handlers?.onAbort) {
-    simpleFetchController.signal.addEventListener('abort', handlers.onAbort, {
+    simpleFetch.controller.signal.addEventListener('abort', handlers.onAbort, {
       once: true
     })
   }
@@ -184,6 +177,16 @@ const simpleFetch = async (options) => {
 }
 
 Object.defineProperties(simpleFetch, {
+  controller: {
+    value: new AbortController(),
+    writable: true
+  },
+  cancel: {
+    value() {
+      this.controller.abort()
+      this.controller = new AbortController()
+    }
+  },
   baseUrl: {
     value: '',
     writable: true,
@@ -195,11 +198,6 @@ Object.defineProperties(simpleFetch, {
     enumerable: true
   }
 })
-
-simpleFetch.cancel = () => {
-  simpleFetchController.abort()
-  simpleFetchController = new window.AbortController()
-}
 
 simpleFetch.get = (url, options) => {
   if (typeof url === 'string') {
