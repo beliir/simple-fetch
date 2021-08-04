@@ -58,7 +58,7 @@ const simpleFetch = async (options) => {
   }
 
   if (
-    _options?.body &&
+    _options.body &&
     _options.headers['Content-Type'] === 'application/json'
   ) {
     _options.body = JSON.stringify(_options.body)
