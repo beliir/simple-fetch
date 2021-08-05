@@ -3,7 +3,7 @@ const simpleFetchCache = new Map()
 const generateRequestId = () => {
   const requestId = Math.random().toString(16).slice(2)
   if (simpleFetch.abortControllers[requestId]) {
-    return getRequestId()
+    return generateRequestId()
   }
   simpleFetch.abortControllers[requestId] = new AbortController()
   simpleFetch.currentRequestId = requestId
