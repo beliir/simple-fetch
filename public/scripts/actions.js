@@ -1,5 +1,5 @@
 import { createTodo } from './utils.js'
-import simpleFetch from '../../npm/index.js'
+
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'
 
 export const getCachedTodos = async () => {
