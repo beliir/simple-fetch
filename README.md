@@ -137,7 +137,15 @@ simpleFetch.headers = {
 ## Cancellation of the request
 
 ```js
+// current (last sended) request will be cancelled
 simpleFetch.cancel()
+
+// send request
+simpleFetch(url)
+// retrieve id of this request
+const { currentRequestId } = simpleFetch
+// cancel this request
+simpleFetch.cancel(currentRequestId)
 ```
 
 ## Options

@@ -1,6 +1,16 @@
 const simpleFetchCache = new Map()
 
-const simpleFetch = (options) => {
+const generateRequestId = () => {
+  const requestId = Math.random().toString(16).slice(2)
+  if (simpleFetch.abortControllers[requestId]) {
+    return getRequestId()
+  }
+  simpleFetch.abortControllers[requestId] = new AbortController()
+  simpleFetch.currentRequestId = requestId
+  return requestId
+}
+
+const simpleFetch = async (options) => {
   let url = ''
 
   if (typeof options === 'string') {
@@ -32,6 +42,8 @@ const simpleFetch = (options) => {
     return console.error('URL not provided!')
   }
 
+  const requestId = generateRequestId()
+
   let _options = {
     method: 'GET',
     headers: {
@@ -40,7 +52,7 @@ const simpleFetch = (options) => {
     referrerPolicy: 'no-referrer',
     customCache: true,
     log: false,
-    signal: simpleFetch.controller.signal
+    signal: simpleFetch.abortControllers[requestId].signal
   }
 
   if (typeof options === 'object') {
@@ -78,9 +90,13 @@ const simpleFetch = (options) => {
   const handlers = options?.handlers
 
   if (handlers?.onAbort) {
-    simpleFetch.controller.signal.addEventListener('abort', handlers.onAbort, {
-      once: true
-    })
+    simpleFetch.abortControllers[requestId].signal.addEventListener(
+      'abort',
+      handlers.onAbort,
+      {
+        once: true
+      }
+    )
   }
 
   if (
@@ -154,6 +170,8 @@ const simpleFetch = (options) => {
         )
       }
 
+      delete simpleFetch.abortControllers[requestId]
+
       return handlers?.onSuccess ? handlers.onSuccess(result) : result
     }
 
@@ -167,24 +185,34 @@ const simpleFetch = (options) => {
       console.log(`%c Result: ${JSON.stringify(result, null, 2)}`, 'color: red')
     }
 
+    delete simpleFetch.abortControllers[requestId]
+
     return handlers?.onError ? handlers.onError(result) : result
   } catch (err) {
     if (handlers?.onError) {
       handlers.onError(err)
     }
+    delete simpleFetch.abortControllers[requestId]
     console.error(err)
   }
 }
 
 Object.defineProperties(simpleFetch, {
-  controller: {
-    value: new AbortController(),
+  abortControllers: {
+    value: [],
+    writable: true
+  },
+  currentRequestId: {
+    value: '',
     writable: true
   },
   cancel: {
-    value() {
-      this.controller.abort()
-      this.controller = new AbortController()
+    value(requestId) {
+      if (requestId) {
+        this.abortControllers[requestId].abort()
+      } else {
+        this.abortControllers[this.currentRequestId].abort()
+      }
     }
   },
   baseUrl: {

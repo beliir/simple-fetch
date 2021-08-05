@@ -1,5 +1,5 @@
 import { createTodo } from './utils.js'
-
+import simpleFetch from '../../npm/index.js'
 simpleFetch.baseUrl = 'http://localhost:5000/задачи'
 
 export const getCachedTodos = async () => {
@@ -86,6 +86,11 @@ export const sendPrivateRequest = async () => {
   }
 }
 
+const sendAnotherLongRequest = async () => {
+  const { data } = await simpleFetch('/another-long')
+  console.log(data)
+}
+
 export const sendTooLongRequest = async () => {
   const onAbort = () => {
     console.log('Request aborted!')
@@ -93,6 +98,7 @@ export const sendTooLongRequest = async () => {
   const onError = (err) => {
     console.error(err.message)
   }
+
   simpleFetch({
     url: '/too-long',
     handlers: {
@@ -100,8 +106,13 @@ export const sendTooLongRequest = async () => {
       onError
     }
   })
+
+  const { currentRequestId } = simpleFetch
+
+  sendAnotherLongRequest()
+
   const timerId = setTimeout(() => {
-    simpleFetch.cancel()
+    simpleFetch.cancel(currentRequestId)
     clearTimeout(timerId)
   }, 2000)
 }

@@ -1,6 +1,14 @@
 const simpleFetchCache = new Map()
 
-let simpleFetchController = new window.AbortController()
+const generateRequestId = () => {
+  const requestId = Math.random().toString(16).slice(2)
+  if (simpleFetch.abortControllers[requestId]) {
+    return getRequestId()
+  }
+  simpleFetch.abortControllers[requestId] = new AbortController()
+  simpleFetch.currentRequestId = requestId
+  return requestId
+}
 
 const simpleFetch = async (options) => {
   let url = ''
@@ -25,12 +33,7 @@ const simpleFetch = async (options) => {
   }
 
   if (options && options.params) {
-    url = Object.entries(options.params)
-      .reduce((a, [k, v]) => {
-        a += `&${k}=${v}`
-        return a
-      }, url)
-      .replace('&', '?')
+    url = `${url}?${new URLSearchParams(options.params)}`
   }
 
   url = window.encodeURI(url)
@@ -38,6 +41,8 @@ const simpleFetch = async (options) => {
   if (!url) {
     return console.error('URL not provided!')
   }
+
+  const requestId = generateRequestId()
 
   let _options = {
     method: 'GET',
@@ -47,7 +52,7 @@ const simpleFetch = async (options) => {
     referrerPolicy: 'no-referrer',
     customCache: true,
     log: false,
-    signal: simpleFetchController.signal
+    signal: simpleFetch.abortControllers[requestId].signal
   }
 
   if (typeof options === 'object') {
@@ -85,9 +90,13 @@ const simpleFetch = async (options) => {
   const handlers = options && options.handlers
 
   if (handlers && handlers.onAbort) {
-    simpleFetchController.signal.addEventListener('abort', handlers.onAbort, {
-      once: true
-    })
+    simpleFetch.abortControllers[requestId].signal.addEventListener(
+      'abort',
+      handlers.onAbort,
+      {
+        once: true
+      }
+    )
   }
 
   if (
@@ -163,6 +172,8 @@ const simpleFetch = async (options) => {
         )
       }
 
+      delete simpleFetch.abortControllers[requestId]
+
       return handlers && handlers.onSuccess
         ? handlers.onSuccess(result)
         : result
@@ -178,16 +189,36 @@ const simpleFetch = async (options) => {
       console.log(`%c Result: ${JSON.stringify(result, null, 2)}`, 'color: red')
     }
 
+    delete simpleFetch.abortControllers[requestId]
+
     return handlers && handlers.onError ? handlers.onError(result) : result
   } catch (err) {
     if (handlers && handlers.onError) {
       handlers.onError(err)
     }
+    delete simpleFetch.abortControllers[requestId]
     console.error(err)
   }
 }
 
 Object.defineProperties(simpleFetch, {
+  abortControllers: {
+    value: [],
+    writable: true
+  },
+  currentRequestId: {
+    value: '',
+    writable: true
+  },
+  cancel: {
+    value(requestId) {
+      if (requestId) {
+        this.abortControllers[requestId].abort()
+      } else {
+        this.abortControllers[this.currentRequestId].abort()
+      }
+    }
+  },
   baseUrl: {
     value: '',
     writable: true,
@@ -199,11 +230,6 @@ Object.defineProperties(simpleFetch, {
     enumerable: true
   }
 })
-
-simpleFetch.cancel = () => {
-  simpleFetchController.abort()
-  simpleFetchController = new window.AbortController()
-}
 
 simpleFetch.get = (url, options) => {
   if (typeof url === 'string') {
