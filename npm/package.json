@@ -24,6 +24,6 @@
     "type": "git",
     "url": "https://github.com/harryheman/simple-fetch"
   },
-  "main": "server.js",
+  "main": "index.js",
   "license": "MIT"
 }
