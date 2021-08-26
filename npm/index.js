@@ -291,6 +291,7 @@ simpleFetch.remove = (url, options) => {
     })
   }
   return simpleFetch({
+    method: 'DELETE',
     ...url
   })
 }
