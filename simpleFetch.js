@@ -21,14 +21,21 @@ const simpleFetch = async (options) => {
     }
   }
 
+  const isSpecialCase =
+    url.startsWith('/') ||
+    url.startsWith('?') ||
+    url.startsWith(':') ||
+    url.lastIndexOf('/') === url.length - 1 ||
+    url.lastIndexOf('?') === url.length - 1 ||
+    url.lastIndexOf(':') === url.length - 1
+
   if (simpleFetch.baseUrl) {
     if (!url) {
       url = simpleFetch.baseUrl
     } else {
-      url =
-        url.startsWith('/') || url.startsWith('?')
-          ? `${simpleFetch.baseUrl}${url}`
-          : `${simpleFetch.baseUrl}/${url}`
+      url = isSpecialCase
+        ? `${simpleFetch.baseUrl}${url}`
+        : `${simpleFetch.baseUrl}/${url}`
     }
   }
 
@@ -280,6 +287,7 @@ simpleFetch.remove = (url, options) => {
     })
   }
   return simpleFetch({
+    method: 'DELETE',
     ...url
   })
 }

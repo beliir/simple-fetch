@@ -1,6 +1,6 @@
 {
   "name": "very-simple-fetch",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Utility for easy use of the Fetch API",
   "keywords": [
     "fetch",
@@ -24,6 +24,6 @@
     "type": "git",
     "url": "https://github.com/harryheman/simple-fetch"
   },
-  "main": "server.js",
+  "main": "index.js",
   "license": "MIT"
 }
