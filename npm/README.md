@@ -1,4 +1,4 @@
-# Simple Fetch
+# Simple Fetch 🌐
 
 ### Utility for easy use of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API</a>
 
@@ -41,13 +41,7 @@ const getTodos = async () => {
 getTodos()
 ```
 
-[More examples on CodeSanbox](https://codesandbox.io/s/simple-fetch-1o2k)
-
-## You can also import module directly from GitHub Pages
-
-```js
-import simpleFetch from 'https://harryheman.github.io/simple-fetch/simpleFetch.js'
-```
+[Full example on CodeSanbox](https://codesandbox.io/s/simple-fetch-1o2k)
 
 ## Signature of the main function
 
