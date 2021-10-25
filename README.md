@@ -1,5 +1,7 @@
 # Simple Fetch 🌐
 
+> NPM - [`very-simple-fetch`](https://www.npmjs.com/package/very-simple-fetch)
+
 ### Utility for easy use of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API</a>
 
 - Returns final (parsed to JSON, text or raw) result, including custom errors
